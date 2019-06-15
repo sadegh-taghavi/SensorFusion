@@ -54,7 +54,7 @@ BaseItem::BaseItem(QQuickItem *parent) : QQuickItem(parent)
 
 void BaseItem::registerTypes()
 {
-    qmlRegisterType<BaseItem>( "org.qtproject.example.navamessenger", 1, 0, "BaseItem" );
+    qmlRegisterType<BaseItem>( "org.tdevelopers.sensorfusion", 1, 0, "BaseItem" );
 }
 
 QVector3D BaseItem::axis() const

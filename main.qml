@@ -2,7 +2,7 @@ import QtQuick 2.9
 import QtSensors 5.0
 import QtQuick.Window 2.2
 import QtMultimedia 5.9
-import org.qtproject.example.navamessenger 1.0
+import org.tdevelopers.sensorfusion 1.0
 
 Window {
     id: window
