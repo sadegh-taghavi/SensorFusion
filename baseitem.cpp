@@ -4,52 +4,52 @@
 #include <QDebug>
 
 
-SimpleKalmanFilter::SimpleKalmanFilter(float mea_e, float est_e, float q)
+KalmanFilter::KalmanFilter(float measurementError, float estimationError, float rate)
 {
-  _err_measure=mea_e;
-  _err_estimate=est_e;
-  _q = q;
+  m_measurementError = measurementError;
+  m_estimationError = estimationError;
+  m_rate = rate;
 }
 
-float SimpleKalmanFilter::updateEstimate(float mea)
+float KalmanFilter::updateEstimate(float measurement)
 {
-  _kalman_gain = _err_estimate / ( _err_estimate + _err_measure );
-  _current_estimate = _last_estimate + _kalman_gain * ( mea - _last_estimate );
-  _err_estimate = ( 1.0 - _kalman_gain ) * _err_estimate + fabs( _last_estimate - _current_estimate ) * _q;
-  _last_estimate = _current_estimate;
+  m_kalmanGain = m_estimationError / ( m_estimationError + m_measurementError );
+  m_currentEstimation = m_lastEstimation + m_kalmanGain * ( measurement - m_lastEstimation );
+  m_estimationError = ( 1.0 - m_kalmanGain ) * m_estimationError + fabs( m_lastEstimation - m_currentEstimation ) * m_rate;
+  m_lastEstimation = m_currentEstimation;
 
-  return _current_estimate;
+  return m_currentEstimation;
 }
 
-void SimpleKalmanFilter::setMeasurementError(float mea_e)
+void KalmanFilter::setMeasurementError(float measurementError)
 {
-  _err_measure=mea_e;
+  m_measurementError = measurementError;
 }
 
-void SimpleKalmanFilter::setEstimateError(float est_e)
+void KalmanFilter::setEstimationError(float estimationError)
 {
-  _err_estimate=est_e;
+  m_estimationError = estimationError;
 }
 
-void SimpleKalmanFilter::setProcessNoise(float q)
+void KalmanFilter::setProcessNoise(float rate)
 {
-  _q=q;
+  m_rate = rate;
 }
 
-float SimpleKalmanFilter::getKalmanGain() {
-  return _kalman_gain;
+float KalmanFilter::getKalmanGain()
+{
+  return m_kalmanGain;
 }
 
-float SimpleKalmanFilter::getEstimateError() {
-  return _err_estimate;
+float KalmanFilter::getEstimationError()
+{
+  return m_estimationError;
 }
 
 
 
 BaseItem::BaseItem(QQuickItem *parent) : QQuickItem(parent)
 {
-    m_count = 0;
-    m_avgReading = m_baseReading = QVector3D( 0.0f, 0.0f, 0.0f);
 }
 
 void BaseItem::registerTypes()
@@ -87,19 +87,8 @@ void BaseItem::setAngle(float angle)
 
 void BaseItem::calculate( float dx, float dy, float dz )
 {
-    QVector3D vecG = QVector3D( /*m_kf[0].updateEstimate(*/-dx/*)*/,
-                                /*m_kf[1].updateEstimate(*/dy/*)*/, /*m_kf[2].updateEstimate(*/dz/*)*/ );
-//    if( m_count < 5 )
-//    {
-//        ++m_count;
-//        m_baseReading += vecG;
-//    }else
-//    {
-//        m_avgReading = m_baseReading / m_count;
-//        m_baseReading = QVector3D( 0.0f, 0.0f, 0.0f);
-//        m_count = 0;
-//    }
-//    vecG = m_avgReading;
+    QVector3D vecG = QVector3D( m_kf[0].updateEstimate(-dx),
+                                m_kf[1].updateEstimate(dy), m_kf[2].updateEstimate(dz) );
     vecG.normalize();
 
 

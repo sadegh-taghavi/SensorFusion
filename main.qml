@@ -26,7 +26,7 @@ Window {
     Magnetometer {
         id: mag
         active: true
-        dataRate: 120
+        dataRate: 60
     }
 
 //    Camera {
@@ -96,14 +96,14 @@ Window {
                 angle: bi.angle
                 Behavior on axis {
                     Vector3dAnimation {
-                        duration: 200
+                        duration: 100
                         easing.type: Easing.OutQuad
                     }
                 }
 
                 Behavior on angle {
                     NumberAnimation {
-                        duration: 200
+                        duration: 100
                         easing.type: Easing.OutQuad
                     }
                 }
@@ -117,7 +117,7 @@ Window {
     }
 
     Timer {
-        interval: 50
+        interval: 16
         running: true
         repeat: true
 //        property bool firstPass: false
