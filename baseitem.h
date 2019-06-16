@@ -10,7 +10,7 @@ class KalmanFilter
 {
 
 public:
-  KalmanFilter(float measurementError = 0.0001f, float estimationError = 0.0001f, float rate = 1.0f );
+  KalmanFilter(float measurementError = 0.0002f, float estimationError = 0.0002f, float rate = 1.0f );
   float updateEstimate(float measurement);
   void setMeasurementError(float measurementError);
   void setEstimationError(float estimationError);
@@ -37,12 +37,15 @@ class BaseItem : public QQuickItem
     QVector3D m_axis;
     float m_angle;
     KalmanFilter m_kf[3];
+    QQuaternion m_baseRotation;
+    QQuaternion m_currentRotation;
 public:
     explicit BaseItem(QQuickItem *parent = nullptr);
 
     static void registerTypes();
 
     Q_INVOKABLE void calculate(float dx, float dy, float dz);
+    Q_INVOKABLE void resetRotation();
 
     QVector3D axis() const;
 

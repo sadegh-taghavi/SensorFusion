@@ -50,6 +50,7 @@ float KalmanFilter::getEstimationError()
 
 BaseItem::BaseItem(QQuickItem *parent) : QQuickItem(parent)
 {
+
 }
 
 void BaseItem::registerTypes()
@@ -91,13 +92,18 @@ void BaseItem::calculate( float dx, float dy, float dz )
                                 m_kf[1].updateEstimate(dy), m_kf[2].updateEstimate(dz) );
     vecG.normalize();
 
-
     float ax;
     float ay;
     float az;
     float an;
-    QQuaternion::fromDirection( vecG, QVector3D( 0.0, 0.0, 1.0 ) ).getAxisAndAngle( &ax, &ay, &az, &an );
+    m_currentRotation = QQuaternion::fromDirection( vecG, QVector3D( 0.0, 0.0, 1.0 ) );
+    ( m_baseRotation.inverted() * m_currentRotation ).getAxisAndAngle( &ax, &ay, &az, &an );
 
     setAxis( QVector3D( -ax, -ay, -az ) );
     setAngle( an );
+}
+
+void BaseItem::resetRotation()
+{
+    m_baseRotation = m_currentRotation;
 }

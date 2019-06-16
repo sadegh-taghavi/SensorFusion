@@ -198,6 +198,12 @@ Window {
     }
 
 
+    MouseArea {
+        anchors.fill: parent
+        onDoubleClicked: {
+            bi.resetRotation()
+        }
+    }
 
     function toRadian( degrees )
     {
