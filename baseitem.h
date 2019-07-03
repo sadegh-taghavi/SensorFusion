@@ -37,8 +37,8 @@ class BaseItem : public QQuickItem
     QVector3D m_axis;
     float m_angle;
     KalmanFilter m_kf[3];
-    QQuaternion m_baseRotation;
-    QQuaternion m_currentRotation;
+    QVector3D m_baseRotation;
+    QVector3D m_currentRotation;
 public:
     explicit BaseItem(QQuickItem *parent = nullptr);
 

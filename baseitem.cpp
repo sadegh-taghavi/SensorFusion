@@ -88,16 +88,19 @@ void BaseItem::setAngle(float angle)
 
 void BaseItem::calculate( float dx, float dy, float dz )
 {
-    QVector3D vecG = QVector3D( m_kf[0].updateEstimate(-dx),
-                                m_kf[1].updateEstimate(dy), m_kf[2].updateEstimate(dz) );
+    m_currentRotation = QVector3D( m_kf[0].updateEstimate(-dx),
+                                m_kf[1].updateEstimate(dy),
+                                m_kf[2].updateEstimate(dz) );
+    QVector3D vecG = m_currentRotation - m_baseRotation;
     vecG.normalize();
 
     float ax;
     float ay;
     float az;
     float an;
-    m_currentRotation = QQuaternion::fromDirection( vecG, QVector3D( 0.0, 0.0, 1.0 ) );
-    ( m_baseRotation.inverted() * m_currentRotation ).getAxisAndAngle( &ax, &ay, &az, &an );
+    QQuaternion::fromDirection(
+                vecG, QVector3D( 0.0, 0.0, 1.0 ).normalized() )
+            .getAxisAndAngle( &ax, &ay, &az, &an );
 
     setAxis( QVector3D( -ax, -ay, -az ) );
     setAngle( an );

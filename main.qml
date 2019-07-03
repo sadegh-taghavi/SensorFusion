@@ -13,14 +13,14 @@ Window {
     Gyroscope {
         id: gyr
         active: true
-        dataRate: 120
+        dataRate: 60
 
     }
 
     Accelerometer {
         id: acc
         active: true
-        dataRate: 120
+        dataRate: 60
     }
 
     Magnetometer {
